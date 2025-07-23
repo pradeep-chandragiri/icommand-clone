@@ -1,0 +1,211 @@
+nav{
+    position: fixed;
+    top: 0;
+    margin: 0 auto;
+    width: 898px;
+    height: auto;
+    padding: 5px 15px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.5);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    z-index: 9;
+}
+.headerWrapper{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.navThroughWrapper{
+    width: max-content;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.navThroughWrapper button{
+    width: 50px;
+    height: 50px;
+}
+.logBtns{
+    width: max-content;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 10px;
+}
+.logBtns .log{
+    padding: 0 50px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    font-size: var(--font-meta);
+    color: var(--background);
+    background-color: var(--text);
+    transition: .3s ease;
+}
+.logBtns .log:first-child{
+    color: var(--text);
+    border: 1px solid var(--border);
+    background-color: var(--background);
+}
+.logBtns .log:hover{
+    box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+}
+
+
+/*SignedIn Header*/
+.signedInLinks{
+    width: max-content;
+    height: 100%;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+.SIL{
+    position: relative;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 40%;
+    transition: .3s ease;
+}
+.SIL:nth-child(3){
+    display: none;
+}
+.cl-internal-14s4tiz{
+    width: 30px;
+    height: 30px;
+}
+.SIL span{
+    position: absolute;
+    top: 120%;
+    width: max-content;
+    height: 30px;
+    padding: 0 20px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    background-color: var(--background);
+    transition: 0.3s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+.SIL:hover{
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+.SIL:hover span{
+    display: flex;
+}
+.moreMenu{
+    display: none;
+}
+
+
+@media screen and (max-width: 480px) {
+    body{
+        margin: 0;
+        width: 100%;
+    }
+    a,
+    button{
+        cursor: default;
+    }
+
+    /*header*/
+    nav{
+        margin: 0;
+        width: 100%;
+        padding: 10px 5px;
+        border: none;
+        border-bottom: 1px solid var(--border);
+    }
+    .headerWrapper{
+        height: auto;
+        gap: 10px;
+        flex-direction: column;
+    }
+    .headerWrapper.active{
+        flex-direction: row;
+    }
+    .logBtns{
+        padding: 0;
+    }
+    .logBtns .log{
+        padding: 0 60px;
+    }
+
+    /*SignedIn Header*/
+    .headerWrapper.signedIn{
+        flex-direction: row;
+    }
+    .SIL,
+    .userProfile{
+        display: none;
+    }
+    .SIL:nth-child(3){
+        display: flex;
+    }
+    .SIL:hover{
+        box-shadow: unset;
+    }
+    .SIL:hover span{
+        display: none;
+    }
+    .SIL{
+        width: 40px;
+        height: 40px;
+    }
+    .moreMenu{
+        position: absolute;
+        top: 100%;
+        right: 25px;
+        width: 180px;
+        height: auto;
+        border-radius: 12px;
+        font-size: calc(var(--font-meta) + 1px);
+        font-weight: 360;
+        background-color: var(--background);
+        box-shadow: rgba(17, 12, 46, 0.10) 0px 48px 100px 0px;
+        border: 1px solid var(--border);
+        z-index: 9;
+        overflow: hidden;
+        display: block;
+    }
+    .moreMenu li{
+        list-style: none;
+        width: 100%;
+        height: 42px;
+        padding: 0 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--border);
+    }
+    .moreMenu li:hover{
+        background-color: var(--secondary);
+    }
+    .moreMenu li:last-child{
+        border: none;
+    }
+    .moreMenu li .Ic{
+        width: max-content;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .cl-internal-14s4tiz{
+        width: 27px;
+        height: 27px;
+    }
+}
