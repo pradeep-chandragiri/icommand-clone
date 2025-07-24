@@ -52,7 +52,7 @@ function ChatInput({ messages, setMessages }) {
                 },
                 {
                 headers: {
-                    Authorization: `Bearer ${process.env.GEMINI_API_KEY}`,
+                    Authorization: "Bearer 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",
                     "Content-Type": "application/json",
                 },
                 }
