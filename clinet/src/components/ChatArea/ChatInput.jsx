@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { SignedIn, SignedOut } from '@clerk/clerk-react'
+import axios from "axios";
 import './ChatInput.css'
 
-function ChatInput() {
+function ChatInput({ messages, setMessages }) {
     const [text, setText] = useState('');
     const textareaRef = useRef(null);
     const handleInput = (e) => {
@@ -15,6 +16,63 @@ function ChatInput() {
             textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
         }
     };
+
+    const [response, setResponse] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = async () => {
+        if (!text.trim()) return;
+        setLoading(true);
+
+        const updatedMessages = [
+            {
+                role: "system",
+                content: "You are a helpful and intelligent assistant. Always answer user questions clearly and only respond to the specific prompt given."
+            },
+            ...messages, 
+            { 
+                role: "user", 
+                content: text 
+            }
+        ];
+        setMessages(updatedMessages);
+        setText("");
+
+        try {
+            const res = await axios.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                {
+                model: "deepseek/deepseek-r1:free",
+                messages: [
+                    {
+                        role: "user",
+                        content: updatedMessages,
+                    },
+                ],
+                },
+                {
+                headers: {
+                    Authorization: `Bearer ${process.env.GEMINI_API_KEY}`,
+                    "Content-Type": "application/json",
+                },
+                }
+            );
+
+            const aiReply = res.data.choices[0].message;
+            setMessages((prev) => [...prev, aiReply]);
+        } catch (error) {
+            setMessages((prev) => [
+                ...prev,
+                {
+                role: "assistant",
+                content: "Something went wrong: " + error.message,
+                },
+            ]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <>
             <div className="ChatInput">
@@ -27,6 +85,7 @@ function ChatInput() {
                                 autoCorrect='off'
                                 autoCapitalize='on'
                                 spellCheck='false'
+                                style={{pointerEvents: 'none'}}
                                 placeholder='Ask Anything'
                             ></textarea>
                         </SignedOut>
@@ -77,13 +136,21 @@ function ChatInput() {
                                     </svg>
                                 </span>
                             </button>
-                            <button className="STS-Btn sendBtn" disabled={text.trim() === ''}>
-                                <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" color="currentColor" fill="none">
-                                        <path d="M12 4L12 20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-                                        <path d="M16.9998 8.99996C16.9998 8.99996 13.3174 4.00001 11.9998 4C10.6822 3.99999 6.99982 9 6.99982 9" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-                                    </svg>
-                                </span>
+                            <button className="STS-Btn sendBtn" onClick={handleSubmit} disabled={loading}>
+                                {loading ? 
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="currentColor" fill="currentColor">
+                                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                                        </svg>
+                                    </span>
+                                    :
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" color="#fff" fill="none">
+                                            <path d="M12 4L12 20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            <path d="M16.9998 8.99996C16.9998 8.99996 13.3174 4.00001 11.9998 4C10.6822 3.99999 6.99982 9 6.99982 9" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </svg>
+                                    </span>
+                                }
                             </button>
                         </div>
                     </div>
