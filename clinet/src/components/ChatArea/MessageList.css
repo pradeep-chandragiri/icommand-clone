@@ -5,9 +5,33 @@
     padding-top: 80px;
 }
 
+.greets{
+    width: 100%;
+    height: 80vh;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.greets h1{
+    text-align: center;
+    font-size: var(--font-lg);
+    line-height: 1.5;
+}
+
+.greets p{
+    text-align: center;
+    line-height: 1.5;
+}
+
 @media screen and (max-width: 480px) {
     .MessageList{
         padding: 10px;
         padding-top: 80px;
+    }
+    .greets{
+        height: 90vh;
     }
 }
