@@ -42,8 +42,6 @@ body{
     color: var(--text);
     font-size: var(--font-body);
     background-color: var(--background);
-    border-left: 1px solid var(--border);
-    border-right: 1px solid var(--border);
 }
 
 h1, h2, h3, h4{

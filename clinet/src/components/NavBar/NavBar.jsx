@@ -16,7 +16,7 @@ function NavBar() {
                 <div className={ user ? 'headerWrapper active' : 'headerWrapper' }>
                     <div className="navThroughWrapper">
                         <button>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="25" height="25" color="currentColor" fill="none">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="23" height="23" color="currentColor" fill="none">
                                 <path d="M15 9V15H9V9H15Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
                                 <path d="M15 15H18C19.6569 15 21 16.3431 21 18C21 19.6569 19.6569 21 18 21C16.3431 21 15 19.6569 15 18V15Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
                                 <path d="M9 15.002H6C4.34315 15.002 3 16.3451 3 18.002C3 19.6588 4.34315 21.002 6 21.002C7.65685 21.002 9 19.6588 9 18.002V15.002Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
@@ -43,7 +43,7 @@ function NavBar() {
                                 <span>History</span>
                             </button>
                             <button className="SIL" onClick={handleToggle}>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="26" height="26" color="currentColor" fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="23" height="23" color="currentColor" fill="none">
                                     <path d="M11.9959 12H12.0049" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                     <path d="M15.9998 12H16.0088" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                     <path d="M7.99981 12H8.00879" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>

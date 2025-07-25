@@ -5,7 +5,6 @@ nav{
     width: 898px;
     height: auto;
     padding: 5px 15px;
-    border-bottom: 1px solid var(--border);
     backdrop-filter: blur(16px) saturate(180%);
     background-color: rgba(255, 255, 255, 0.5);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
@@ -125,9 +124,8 @@ nav{
     nav{
         margin: 0;
         width: 100%;
-        padding: 10px 5px;
+        padding: 5px 5px;
         border: none;
-        border-bottom: 1px solid var(--border);
     }
     .headerWrapper{
         height: auto;
