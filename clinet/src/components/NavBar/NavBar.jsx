@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { SignedIn, SignedOut, useClerk, UserButton, useUser } from '@clerk/clerk-react'
 import './NavBar.css'
+import History from '../History/History.jsx'
 
 function NavBar() {
     const { openSignIn } = useClerk()
     const { user } = useUser()
     const [show, setShow] = useState(false);
+    const [open, setOpen] = useState(false);
 
     const handleToggle = () => {
         setShow((prev) => !prev);
+    };
+    const handleHistory = () => {
+        setOpen((prev) => !prev);
     };
     return (
         <>
@@ -28,15 +33,15 @@ function NavBar() {
                     { user ?
                         <div className="signedInLinks">
                             <button className="SIL">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="currentColor" fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="23" height="23" color="currentColor" fill="none">
                                     <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle>
                                     <path d="M6.5 20.5L7.90613 15.227C8.19164 14.1564 8.33439 13.621 8.73856 13.3105C9.14274 13 9.69677 13 10.8048 13H13.1952C14.3032 13 14.8573 13 15.2614 13.3105C15.6656 13.621 15.8084 14.1564 16.0939 15.227L17.5 20.5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
                                     <path d="M9.5 13L11.0769 9.36095C11.4701 8.45365 11.6667 8 12 8C12.3333 8 12.5299 8.45365 12.9231 9.36095L14.5 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                 </svg>
                                 <span>New chat</span>
                             </button>
-                            <button className="SIL">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="currentColor" fill="none">
+                            <button className="SIL" onClick={handleHistory}>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="23" height="23" color="currentColor" fill="none">
                                     <path d="M5.04798 8.60657L2.53784 8.45376C4.33712 3.70477 9.503 0.999914 14.5396 2.34474C19.904 3.77711 23.0904 9.26107 21.6565 14.5935C20.2227 19.926 14.7116 23.0876 9.3472 21.6553C5.36419 20.5917 2.58192 17.2946 2 13.4844" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                     <path d="M12 8V12L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                 </svg>
@@ -53,37 +58,42 @@ function NavBar() {
                             <div className="userProfile">
                                 <UserButton />
                             </div>
+                            {open && (
+                                <History handleHistory={handleHistory} />
+                            )}
                             {show && (
-                                <div className="moreMenu">
-                                    <li>
-                                        <span>New chat</span>
-                                        <span className='Ic'>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" color="currentColor" fill="none">
-                                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle>
-                                                <path d="M6.5 20.5L7.90613 15.227C8.19164 14.1564 8.33439 13.621 8.73856 13.3105C9.14274 13 9.69677 13 10.8048 13H13.1952C14.3032 13 14.8573 13 15.2614 13.3105C15.6656 13.621 15.8084 14.1564 16.0939 15.227L17.5 20.5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
-                                                <path d="M9.5 13L11.0769 9.36095C11.4701 8.45365 11.6667 8 12 8C12.3333 8 12.5299 8.45365 12.9231 9.36095L14.5 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            </svg>
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span>History</span>
-                                        <span className='Ic'>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" color="currentColor" fill="none">
-                                                <path d="M5.04798 8.60657L2.53784 8.45376C4.33712 3.70477 9.503 0.999914 14.5396 2.34474C19.904 3.77711 23.0904 9.26107 21.6565 14.5935C20.2227 19.926 14.7116 23.0876 9.3472 21.6553C5.36419 20.5917 2.58192 17.2946 2 13.4844" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                <path d="M12 8V12L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            </svg>
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span>Profile</span>
-                                        <span className='Ic'>
-                                        <UserButton />
-                                        </span>
-                                    </li>
-                                    <li onClick={handleToggle}>
-                                        <span>Cancel</span>
-                                    </li>
-                                </div>
+                                <>
+                                    <div className="moreMenu">
+                                        <li>
+                                            <span>New chat</span>
+                                            <span className='Ic'>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" color="currentColor" fill="none">
+                                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle>
+                                                    <path d="M6.5 20.5L7.90613 15.227C8.19164 14.1564 8.33439 13.621 8.73856 13.3105C9.14274 13 9.69677 13 10.8048 13H13.1952C14.3032 13 14.8573 13 15.2614 13.3105C15.6656 13.621 15.8084 14.1564 16.0939 15.227L17.5 20.5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+                                                    <path d="M9.5 13L11.0769 9.36095C11.4701 8.45365 11.6667 8 12 8C12.3333 8 12.5299 8.45365 12.9231 9.36095L14.5 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                            </span>
+                                        </li>
+                                        <li onClick={handleHistory}>
+                                            <span>History</span>
+                                            <span className='Ic'>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" color="currentColor" fill="none">
+                                                    <path d="M5.04798 8.60657L2.53784 8.45376C4.33712 3.70477 9.503 0.999914 14.5396 2.34474C19.904 3.77711 23.0904 9.26107 21.6565 14.5935C20.2227 19.926 14.7116 23.0876 9.3472 21.6553C5.36419 20.5917 2.58192 17.2946 2 13.4844" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    <path d="M12 8V12L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span>Profile</span>
+                                            <span className='Ic'>
+                                            <UserButton />
+                                            </span>
+                                        </li>
+                                        <li onClick={handleToggle}>
+                                            <span>Cancel</span>
+                                        </li>
+                                    </div>
+                                </>
                             )}
                         </div>
                         :
