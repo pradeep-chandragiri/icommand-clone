@@ -50,7 +50,7 @@ function ChatInput({ messages, setMessages }) {
             const res = await axios.post(
                 "https://openrouter.ai/api/v1/chat/completions",
                 {
-                    model: "deepseek/deepseek-v3-base:free",
+                    model: "deepseek/deepseek-r1:free",
                     messages: updatedMessages,
                 },
                 {
