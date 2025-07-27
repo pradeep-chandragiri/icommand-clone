@@ -76,6 +76,22 @@
 .OST-Btn:hover{
     background-color: var(--secondary);
 }
+.recorderStatus{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background);
+}
+.recording{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--accent-danger);
+    animation: pulse-recording 1.5s infinite;
+}
 .moreOptions{
     position: absolute;
     bottom: 45px;
