@@ -34,6 +34,7 @@
     padding: 10px;
     max-height: 140px;
     overflow: scroll;
+    text-transform: capitalize;
     font-size: calc(var(--font-body) - 1px);
 }
 
@@ -76,7 +77,9 @@
 .OST-Btn:hover{
     background-color: var(--secondary);
 }
-.recorderStatus{
+.recorderStatus,
+.generating{
+    position: relative;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -91,6 +94,15 @@
     border-radius: 50%;
     background-color: var(--accent-danger);
     animation: pulse-recording 1.5s infinite;
+}
+.generating::after{
+    position: absolute;
+    content: '';
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    background-color: var(--text);
+    animation: result-generating 1.5s infinite;
 }
 .moreOptions{
     position: absolute;

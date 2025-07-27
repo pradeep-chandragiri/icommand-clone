@@ -197,7 +197,8 @@ function ChatInput({ messages, setMessages }) {
                             </button>
                         </div>
                         <div className="icommandSTS">
-                            <button className="STS-Btn" onClick={handleSpeech}>
+                            
+                            <button className="STS-Btn" onClick={handleSpeech} style={loading ? { pointerEvents: 'none' } : {}}>
                                 <span>
                                     {listening 
                                     ?
@@ -214,11 +215,7 @@ function ChatInput({ messages, setMessages }) {
                             </button>
                             <button className="STS-Btn sendBtn" onClick={handleSubmit} disabled={loading}>
                                 {loading ? 
-                                    <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="currentColor" fill="currentColor">
-                                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
-                                        </svg>
-                                    </span>
+                                    <span className='generating'></span>
                                     :
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" color="#fff" fill="none">
