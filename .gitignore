@@ -1,4 +1,7 @@
 node_modules
 
-#Secrets
-.env
+# Ignore environment files
+client/.env
+client/.env.*
+server/.env
+server/.env.*
