@@ -61,7 +61,13 @@ function ChatInput({ messages, setMessages }) {
                 }
             );
 
-            const aiReply = res.data.choices[0].message;
+            const aiRaw = res.data.choices[0].message;
+            const cleanedText = aiRaw.content
+            .replace(/\*\*(.*?)\*\*/g, '$1')   // Remove bold
+            .replace(/\*(.*?)\*/g, '$1')       // Remove italic
+            .replace(/^#+\s*(.*)/gm, '$1');    // Remove headings (#)
+
+            const aiReply = { ...aiRaw, content: cleanedText };
             const finalMessages = [...updatedMessages, aiReply];
             setMessages(finalMessages);
 
