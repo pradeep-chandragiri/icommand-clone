@@ -1,11 +1,15 @@
-import React, { useRef, useState } from 'react';
-import { SignedIn, SignedOut } from '@clerk/clerk-react'
+import React, { useRef, useState, useEffect } from 'react';
+import { SignedIn, SignedOut, useAuth } from '@clerk/clerk-react'
 import axios from "axios";
 import { useSpeechRecognizer } from '../../utils/useSpeechRecognizer.js';
 import './ChatInput.css';
 
 function ChatInput({ messages, setMessages }) {
+    const { getToken } = useAuth();
     const [text, setText] = useState('');
+    const [chatId, setChatId] = useState();
+    const [loading, setLoading] = useState(false);
+
     const textareaRef = useRef(null);
     const handleInput = (e) => {
         const textarea = textareaRef.current;
@@ -18,92 +22,100 @@ function ChatInput({ messages, setMessages }) {
         }
     };
 
-    const [response, setResponse] = useState("");
-    const [loading, setLoading] = useState(false);
+    // 👇 Fetch history on mount if chatId exists
+    useEffect(() => {
+        const fetchHistory = async () => {
+            if (!chatId) return;
+            const token = await getToken();
+            const res = await axios.get(`http://localhost:4000/api/chat/${chatId}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setMessages(res.data.chat?.messages || []);
+        };
+        fetchHistory();
+    }, [chatId]);
 
     const handleSubmit = async () => {
         if (!text.trim()) return;
         setLoading(true);
-
-        const updatedMessages = [
-            {
-                role: "system",
-                content: "You are a helpful and intelligent assistant. Always answer user questions clearly and only respond to the specific prompt given."
-            },
-            ...messages, 
-            { 
-                role: "user", 
-                content: text 
-            }
-        ];
+        const token = await getToken();
+        const userMessage = { role: "user", content: text };
+        const updatedMessages = [...messages, userMessage];
         setMessages(updatedMessages);
         setText("");
 
         try {
+            // Send to OpenRouter or any LLM API
             const res = await axios.post(
                 "https://openrouter.ai/api/v1/chat/completions",
                 {
-                model: "deepseek/deepseek-r1:free",
-                messages: [
-                    {
-                        role: "user",
-                        content: updatedMessages,
-                    },
-                ],
+                    model: "deepseek/deepseek-r1:free",
+                    messages: updatedMessages,
                 },
                 {
                 headers: {
-                    Authorization: "Bearer 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",
+                    Authorization: `Bearer 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`,
                     "Content-Type": "application/json",
                 },
                 }
             );
 
             const aiReply = res.data.choices[0].message;
-            setMessages((prev) => [...prev, aiReply]);
-        } catch (error) {
+            const finalMessages = [...updatedMessages, aiReply];
+            setMessages(finalMessages);
+
+            if (chatId) {
+                // 👇 Update existing chat
+                await axios.patch(
+                `http://localhost:4000/api/chat/update/${chatId}`,
+                { messages: [userMessage, aiReply] },
+                { headers: { Authorization: `Bearer ${token}` } }
+                );
+            } else {
+                // 👇 First message: create new chat
+                const saveRes = await axios.post(
+                "http://localhost:4000/api/chat/save",
+                { messages: [userMessage, aiReply] },
+                { headers: { Authorization: `Bearer ${token}` } }
+                );
+                const newChatId = saveRes.data.chat._id;
+                setChatId(newChatId);
+                localStorage.setItem("chatId", newChatId);
+            }
+        } catch (err) {
+            console.error(err);
             setMessages((prev) => [
                 ...prev,
-                {
-                role: "assistant",
-                content: "Something went wrong: " + error.message,
-                },
+                { role: "assistant", content: "Something went wrong." },
             ]);
         } finally {
             setLoading(false);
         }
     };
 
+    //Show/Hide Switch
     const [show, setShow] = useState(false);
-    
     const handleToggle = () => {
         setShow((prev) => !prev);
     };
 
-
     //useSpeechRecognizer
-    const [detectedLang, setDetectedLang] = useState(null);
     const [listening, setListening] = useState(false);
-
     const { startListening, stopListening } = useSpeechRecognizer();
-
     const handleSpeech = () => {
         if (listening) {
             stopListening();
             setListening(false);
-            setDetectedLang(null);
         } else {
             setText("");
-            setDetectedLang(null);
             setListening(true);
 
             startListening({
                 onText: (t) => setText(t),
-                onLanguageDetected: (lang) => setDetectedLang(lang),
                 onEnd: () => setListening(false)
             });
         }
-     };
+    };
 
     return (
         <>

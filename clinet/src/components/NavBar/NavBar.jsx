@@ -59,6 +59,7 @@ function NavBar() {
                                 <UserButton />
                             </div>
                             {open && (
+                                
                                 <History handleHistory={handleHistory} />
                             )}
                             {show && (
