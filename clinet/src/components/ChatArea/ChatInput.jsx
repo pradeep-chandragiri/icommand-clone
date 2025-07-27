@@ -54,10 +54,10 @@ function ChatInput({ messages, setMessages }) {
                     messages: updatedMessages,
                 },
                 {
-                headers: {
-                    Authorization: `Bearer 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`,
-                    "Content-Type": "application/json",
-                },
+                    headers: {
+                        Authorization: `Bearer ${process.env.OPENROUTER_KEY}`,
+                        "Content-Type": "application/json",
+                    },
                 }
             );
 
