@@ -55,7 +55,7 @@ function ChatInput({ messages, setMessages }) {
                 },
                 {
                 headers: {
-                    Authorization: `Bearer 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`,
+                    Authorization: `Bearer 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`,
                     "Content-Type": "application/json",
                 },
                 }
