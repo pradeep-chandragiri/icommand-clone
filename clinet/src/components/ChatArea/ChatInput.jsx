@@ -5,6 +5,7 @@ import { useSpeechRecognizer } from '../../utils/useSpeechRecognizer.js';
 import './ChatInput.css';
 
 function ChatInput({ messages, setMessages }) {
+    const API_BASE = import.meta.env.VITE_API_URL;
     const { getToken } = useAuth();
     const [text, setText] = useState('');
     const [chatId, setChatId] = useState();
@@ -27,7 +28,7 @@ function ChatInput({ messages, setMessages }) {
         const fetchHistory = async () => {
             if (!chatId) return;
             const token = await getToken();
-            const res = await axios.get(`http://localhost:4000/api/chat/${chatId}`, {
+            const res = await axios.get(`${API_BASE}/api/chat/${chatId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setMessages(res.data.chat?.messages || []);
@@ -67,14 +68,14 @@ function ChatInput({ messages, setMessages }) {
             if (chatId) {
                 // 👇 Update existing chat
                 await axios.patch(
-                `http://localhost:4000/api/chat/update/${chatId}`,
+                `${API_BASE}/api/chat/update/${chatId}`,
                 { messages: [userMessage, aiReply] },
                 { headers: { Authorization: `Bearer ${token}` } }
                 );
             } else {
                 // 👇 First message: create new chat
                 const saveRes = await axios.post(
-                "http://localhost:4000/api/chat/save",
+                `${API_BASE}/api/chat/save`,
                 { messages: [userMessage, aiReply] },
                 { headers: { Authorization: `Bearer ${token}` } }
                 );

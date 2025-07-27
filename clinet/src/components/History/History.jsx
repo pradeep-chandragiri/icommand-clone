@@ -5,13 +5,14 @@ import './History.css'
 
 function History({handleHistory, clerkToken}) {
     //Getting Chat History
+    const API_BASE = import.meta.env.VITE_API_URL;
     const { getToken } = useAuth();
     const [chats, setChats] = useState([]);
     useEffect(() => {
         const fetchHistory = async () => {
         const token = await getToken();
 
-        const res = await axios.get("http://localhost:4000/api/chat/history", {
+        const res = await axios.get(`${API_BASE}/api/chat/history`, {
             headers: {
             Authorization: `Bearer ${token}`,
             },
